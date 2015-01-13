@@ -1,0 +1,20 @@
+setwd("/Users/michaelrbarb/Desktop/Cleaning Data")
+property<-read.table("./getdata-data-ss06hid.csv",sep=",",header=TRUE)
+greatmil<-nrow(property[which(property$VAL==24),])
+colIndex<-7:15
+rowIndex<-18:23
+library(xlsx)
+dat<-read.xlsx("./getdata-data-DATA.gov_NGAP.xlsx",sheetIndex=1,colIndex=colIndex,rowIndex=rowIndex)
+sum(dat$Zip*dat$Ext,na.rm=T)
+library(XML)
+fileUrl<-'./data.xml'
+doc<-xmlTreeParse(fileUrl,useInternal=TRUE)
+rootNode<-xmlRoot(doc)
+xmlName(rootNode)
+zips<-xpathSApply(rootNode,"//zipcode",xmlValue)
+z1<-subset(zips)
+z2<-data.frame(zips)
+nrow(subset(z2,zips==21231))
+DT<-fread("./getdata-data-ss06pid.csv")
+tapply(DT$pwgtp15,DT$SEX,mean)
+DT[,mean(pwgtp15),by=SEX]
